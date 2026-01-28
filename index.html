@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diyar | Full-stack Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --text-color: #e0e0e0;
+            --accent-color: #00ff41; /* Терминальный зеленый */
+            --header-color: #1a1a1a;
+            --border-color: #333;
+            --dim-text: #888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        /* Контейнер терминала */
+        .terminal-window {
+            width: 100%;
+            max-width: 850px;
+            background: #000;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Шапка терминала */
+        .terminal-header {
+            background: var(--header-color);
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dots { display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; opacity: 0.8; }
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
+        .title { font-size: 12px; color: var(--dim-text); flex-grow: 1; text-align: center; }
+
+        /* Основная часть */
+        .terminal-body {
+            padding: 25px;
+            overflow-y: auto;
+            max-height: 85vh;
+        }
+
+        .command-line { margin-bottom: 25px; }
+        
+        /* Промпт (diyar@astana) */
+        .prompt { color: var(--accent-color); font-weight: bold; margin-bottom: 5px; display: block; }
+        .prompt::before { content: "diyar@astana:~$ "; }
+        
+        .output {
+            margin-left: 5px;
+            line-height: 1.6;
+        }
+
+        h1 { font-size: 1.5rem; margin-bottom: 8px; color: #fff; }
+        b { color: var(--accent-color); }
+
+        /* Проекты */
+        .projects-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .project-box {
+            border: 1px dashed var(--border-color);
+            padding: 15px;
+            transition: 0.2s;
+        }
+
+        .project-box:hover {
+            border-color: var(--accent-color);
+            background: rgba(0, 255, 65, 0.03);
+        }
+
+        .project-title { color: var(--accent-color); font-weight: 700; text-decoration: none; font-size: 1.1rem; }
+        
+        /* Сетки ссылок */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            background: #111;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .social-btn:hover {
+            background: var(--accent-color);
+            color: #000;
+            border-color: var(--accent-color);
+        }
+
+        /* Каретка (курсор) */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 17px;
+            background: var(--accent-color);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* АДАПТАЦИЯ ДЛЯ МОБИЛОК */
+        @media (max-width: 600px) {
+            body { padding: 10px; align-items: flex-start; }
+            .terminal-body { padding: 15px; }
+            .prompt::before { content: "➜ "; } /* Укороченный промпт для узких экранов */
+            h1 { font-size: 1.2rem; }
+            .project-title { font-size: 1rem; }
+            .links-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="terminal-window">
+    <div class="terminal-header">
+        <div class="dots">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+        </div>
+        <div class="title">zsh — diyardyus — 80x24</div>
+    </div>
+
+    <div class="terminal-body">
+        
+        <div class="command-line">
+            <span class="prompt">whoami</span>
+            <div class="output">
+                <h1>Дияр, 14 лет</h1>
+                <p>Full-stack разработчик из <b>Астаны</b>.</p>
+                <p>Стек: Python (Djnago, Aiogram), Dart (Flutter), AI Integration.</p>
+            </div>
+        </div>
+
+        <div class="command-line">
+            <span class="prompt">ls --projects</span>
+            <div class="output">
+                <div class="projects-container">
+                    <div class="project-box">
+                        <a href="#" class="project-title">Aim AI</a>
+                        <p>Умный трекер задач с интеграцией LLM для анализа продуктивности.</p>
+                    </div>
+                    <div class="project-box">
+                        <span class="project-title">Automation Lab</span>
+                        <p>Скрипты для автоматизации рутины и парсинга данных.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-line">
+            <span class="prompt">curl -X GET /contacts</span>
+            <div class="output">
+                <div class="links-grid">
+                    <a href="https://t.me/diyardyus" target="_blank" class="social-btn">
+                        <i class="fa-brands fa-telegram"></i> Telegram
+                    </a>
+                    <a href="https://github.com/Own11" target="_blank" class="social-btn">
+                        <i class="fa-brands fa-github"></i> GitHub
+                    </a>
+                    <a href="https://t.me/CodeByDiyar" target="_blank" class="social-btn">
+                        <i class="fa-solid fa-bullhorn"></i> Channel
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-line">
+            <span class="prompt"><span id="typewriter"></span><span class="cursor"></span></span>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Эффект печатающегося текста в конце
+    const text = "ping -c 1 future_opportunities...";
+    let i = 0;
+    function type() {
+        if (i < text.length) {
+            document.getElementById("typewriter").innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, 100);
+        }
+    }
+    window.onload = type;
+</script>
+
+</body>
+</html>
