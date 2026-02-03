@@ -3,18 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diyar | Full-stack Developer</title>
+    <title>Diyar | Full-stack Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* Dark Theme (Default) */
             --bg-color: #08080a;
+            --terminal-bg: rgba(13, 13, 15, 0.95);
             --text-color: #d1d1d1;
-            --accent-color: #00ff41; /* Cyber Cyan */
-            --secondary-accent: #00ff41; /* Classic Terminal Green */
+            --accent-color: #00ff41;
+            --secondary-accent: #00ff41;
             --header-color: #121214;
             --border-color: #2a2a2e;
             --card-bg: rgba(255, 255, 255, 0.03);
+            --h-color: #ffffff;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #e0e0e6;
+            --terminal-bg: rgba(245, 245, 247, 0.98);
+            --text-color: #2a2a2e;
+            --accent-color: #007aff; /* Apple-style Blue */
+            --secondary-accent: #28a745;
+            --header-color: #d1d1d6;
+            --border-color: #bcbcbc;
+            --card-bg: rgba(0, 0, 0, 0.05);
+            --h-color: #000000;
         }
 
         * {
@@ -22,6 +37,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'JetBrains Mono', monospace;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
@@ -32,35 +48,19 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            overflow-x: hidden;
-        }
-
-        /* Scanline effect */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
         }
 
         .terminal-window {
             width: 100%;
             max-width: 900px;
-            background: rgba(13, 13, 15, 0.95);
+            background: var(--terminal-bg);
             border: 1px solid var(--border-color);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             border-radius: 12px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            animation: terminalEntrance 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
-            z-index: 3;
         }
 
         .terminal-header {
@@ -72,11 +72,20 @@
         }
 
         .dots { display: flex; gap: 10px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .red { background: #ff5f57; box-shadow: 0 0 8px #ff5f57; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; }
+        .red { background: #ff5f57; }
         .yellow { background: #ffbd2e; }
         .green { background: #27c93f; }
-        .title { font-size: 13px; color: #666; flex-grow: 1; text-align: center; letter-spacing: 1px; }
+        
+        .title { font-size: 13px; color: var(--text-color); opacity: 0.6; flex-grow: 1; text-align: center; }
+
+        /* Theme Switcher */
+        .theme-toggle {
+            font-size: 14px;
+            cursor: pointer;
+            color: var(--accent-color);
+            margin-right: 10px;
+        }
 
         .terminal-body {
             padding: 35px;
@@ -85,17 +94,12 @@
         }
 
         .command-line { margin-bottom: 35px; }
-        
         .prompt { color: var(--accent-color); font-weight: bold; margin-bottom: 10px; display: block; }
         .prompt::before { content: "diyar@astana:~$ "; color: var(--secondary-accent); }
         
-        .output { margin-left: 10px; }
-
-        h1 { font-size: 1.8rem; margin-bottom: 10px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        h1 { font-size: 1.8rem; margin-bottom: 10px; color: var(--h-color); }
         .highlight { color: var(--accent-color); }
-        .stack-list { color: var(--secondary-accent); margin-top: 10px; font-size: 0.9rem; }
 
-        /* Projects Grid */
         .projects-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -108,31 +112,16 @@
             border: 1px solid var(--border-color);
             padding: 20px;
             border-radius: 8px;
-            transition: all 0.3s ease;
-            position: relative;
         }
 
         .project-box:hover {
             border-color: var(--accent-color);
-            background: rgba(0, 242, 255, 0.05);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
-        .project-title { 
-            color: var(--accent-color); 
-            font-weight: 700; 
-            text-decoration: none; 
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .project-title { color: var(--accent-color); font-weight: 700; text-decoration: none; font-size: 1.1rem; }
+        .project-box p { font-size: 0.9rem; margin-top: 10px; opacity: 0.8; }
 
-        .project-title::before { content: "●"; font-size: 0.8rem; color: var(--secondary-accent); }
-
-        .project-box p { font-size: 0.9rem; margin-top: 10px; line-height: 1.5; color: #aaa; }
-
-        /* Links */
         .links-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -145,56 +134,49 @@
             justify-content: center;
             gap: 12px;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.02);
-            color: #fff;
+            background: var(--card-bg);
+            color: var(--text-color);
             text-decoration: none;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            font-size: 0.9rem;
-            transition: 0.3s;
+            transition: 0.2s;
         }
 
         .social-btn:hover {
             background: var(--accent-color);
-            color: #000;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+            color: #fff;
         }
 
         .cursor {
             display: inline-block;
             width: 10px;
-            height: 20px;
+            height: 18px;
             background: var(--secondary-accent);
             animation: blink 1s infinite;
             vertical-align: middle;
-            margin-left: 5px;
         }
 
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        @keyframes terminalEntrance {
-            from { opacity: 0; transform: scale(0.95) translateY(20px); filter: blur(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-        }
 
         @media (max-width: 600px) {
             .terminal-body { padding: 20px; }
             .prompt::before { content: "➜ "; }
-            h1 { font-size: 1.4rem; }
-            .projects-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
 <div class="terminal-window">
     <div class="terminal-header">
         <div class="dots">
-            <div class="dot red"></div>
+            <div class="dot red" onclick="alert('System Shutdown Sim...')"></div>
             <div class="dot yellow"></div>
-            <div class="dot green"></div>
+            <div class="dot green" id="themeBtn"></div>
         </div>
-        <div class="title">bash — diyardyus — portfolio</div>
+        <div class="title">zsh — diyardyus — 2026</div>
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+        </div>
     </div>
 
     <div class="terminal-body">
@@ -203,10 +185,8 @@
             <span class="prompt">whoami</span>
             <div class="output">
                 <h1>Diyar, <span class="highlight">14 y.o.</span></h1>
-                <p>Full-stack developer based in <span class="highlight">Astana, KZ</span>.</p>
-                <p class="stack-list">
-                    <i class="fa-solid fa-code"></i> Main Stack: Python (Django, Aiogram), Dart (Flutter), AI Integration.
-                </p>
+                <p>Full-stack developer from <span class="highlight">Astana</span>.</p>
+                <p>Stack: Python (Django), Dart (Flutter), AI Solutions.</p>
             </div>
         </div>
 
@@ -215,12 +195,12 @@
             <div class="output">
                 <div class="projects-container">
                     <div class="project-box">
-                        <a href="#" class="project-title">Aim AI</a>
-                        <p>An intelligent task tracker featuring LLM integration for advanced productivity analysis and scheduling.</p>
+                        <a href="#" class="project-title">LabAI</a>
+                        <p>Experimental AI research platform focused on LLM fine-tuning and automated analytical workflows.</p>
                     </div>
                     <div class="project-box">
                         <span class="project-title">Automation Lab</span>
-                        <p>A collection of high-performance scripts designed for workflow automation and large-scale data parsing.</p>
+                        <p>Custom-built scripts for processing datasets and optimizing developer operations (DevOps).</p>
                     </div>
                 </div>
             </div>
@@ -230,15 +210,9 @@
             <span class="prompt">curl -X GET /contacts</span>
             <div class="output">
                 <div class="links-grid">
-                    <a href="https://t.me/diyardyus" target="_blank" class="social-btn">
-                        <i class="fa-brands fa-telegram"></i> Telegram
-                    </a>
-                    <a href="https://github.com/Own11" target="_blank" class="social-btn">
-                        <i class="fa-brands fa-github"></i> GitHub
-                    </a>
-                    <a href="https://t.me/CodeByDiyar" target="_blank" class="social-btn">
-                        <i class="fa-solid fa-bullhorn"></i> Channel
-                    </a>
+                    <a href="https://t.me/diyardyus" target="_blank" class="social-btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
+                    <a href="https://github.com/Own11" target="_blank" class="social-btn"><i class="fa-brands fa-github"></i> GitHub</a>
+                    <a href="https://t.me/CodeByDiyar" target="_blank" class="social-btn"><i class="fa-solid fa-bullhorn"></i> Channel</a>
                 </div>
             </div>
         </div>
@@ -251,13 +225,22 @@
 </div>
 
 <script>
+    // Theme Switcher Logic
+    function toggleTheme() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', newTheme);
+    }
+
+    // Typewriter effect
     const text = "ping -c 1 future_opportunities.sh";
     let i = 0;
     function type() {
         if (i < text.length) {
             document.getElementById("typewriter").innerHTML += text.charAt(i);
             i++;
-            setTimeout(type, 80);
+            setTimeout(type, 100);
         }
     }
     window.onload = type;
