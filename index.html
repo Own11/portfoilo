@@ -1,254 +1,442 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diyar | Full-stack Portfolio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>DIYAR OWN · kind guy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
     <style>
         :root {
-            /* Dark Theme (Default) */
-            --bg-color: #08080a;
-            --terminal-bg: rgba(13, 13, 15, 0.95);
-            --text-color: #d1d1d1;
-            --accent-color: #00ff41;
-            --secondary-accent: #00ff41;
-            --header-color: #121214;
-            --border-color: #2a2a2e;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --h-color: #ffffff;
-        }
-
-        [data-theme="light"] {
-            --bg-color: #e0e0e6;
-            --terminal-bg: rgba(245, 245, 247, 0.98);
-            --text-color: #2a2a2e;
-            --accent-color: #000000; /* Apple-style Blue */
-            --secondary-accent: #000000;
-            --header-color: #d1d1d6;
-            --border-color: #bcbcbc;
-            --card-bg: rgba(0, 0, 0, 0.05);
-            --h-color: #000000;
+            --bg-color: #080706;
+            --card-bg: rgba(18, 15, 13, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f3eee9;
+            --text-muted: #8e8379;
+            --accent-white: #ffffff;
+            --accent-glow: rgba(255, 255, 255, 0.08);
+            --btn-bg: rgba(255, 255, 255, 0.03);
+            --btn-hover: rgba(255, 255, 255, 0.08);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'JetBrains Mono', monospace;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-color);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .terminal-window {
-            width: 100%;
-            max-width: 900px;
-            background: var(--terminal-bg);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            padding: 1.5rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: -0.011em;
+            color: var(--text-main);
+            overflow-x: hidden;
             position: relative;
         }
 
-        .terminal-header {
-            background: var(--header-color);
-            padding: 14px 20px;
+        /* МЯГКОЕ ДИНАМИЧЕСКОЕ СВЕЧЕНИЕ НА ФОНЕ */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+            filter: blur(50px);
+        }
+
+        /* ГЛАВНАЯ КАРТОЧКА */
+        .card {
+            position: relative;
+            z-index: 1;
+            max-width: 580px;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 3rem;
+            border-radius: 32px;
+            border: 1px solid var(--card-border);
+            box-shadow:
+                0 30px 100px -20px rgba(0, 0, 0, 0.9),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 35px 110px -20px rgba(0, 0, 0, 0.95),
+                0 0 40px rgba(255, 255, 255, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* ВЕРХНИЙ СВЕТОВОЙ АКЦЕНТ */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 20%;
+            right: 20%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+
+        /* ХЕДЕР */
+        .header {
+            margin-bottom: 1.75rem;
+        }
+
+        .name {
+            font-size: 3.25rem;
+            font-weight: 600;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(180deg, #ffffff 30%, #a8a099 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub-head {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+            text-transform: lower-case;
+        }
+
+        /* СТАТУС / ИНФО-БАР */
+        .status {
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(255, 255, 255, 0.025);
+            padding: 0.45rem 0.9rem;
+            border-radius: 100px;
+            margin-bottom: 2.25rem;
+            font-size: 0.85rem;
+            color: #a3988e;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .status .sep {
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 0.75rem;
+        }
+
+        .status .highlight {
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .status-link {
+            color: var(--accent-white);
+            text-decoration: none;
+            transition: opacity 0.2s;
+            font-weight: 500;
+        }
+
+        .status-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .status .badge {
+            background: var(--accent-glow);
+            padding: 0.15rem 0.55rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--accent-white);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* СЕКЦИЯ ОПЫТА */
+        .experience {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 2.25rem;
+        }
+
+        .exp-item {
             display: flex;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .dots { display: flex; gap: 10px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; }
-        .red { background: #ff5f57; }
-        .yellow { background: #ffbd2e; }
-        .green { background: #27c93f; }
-        
-        .title { font-size: 13px; color: var(--text-color); opacity: 0.6; flex-grow: 1; text-align: center; }
-
-        /* Theme Switcher */
-        .theme-toggle {
-            font-size: 14px;
+            justify-content: space-between;
+            padding: 1rem 1.2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
-            color: var(--accent-color);
-            margin-right: 10px;
         }
 
-        .terminal-body {
-            padding: 35px;
-            overflow-y: auto;
-            max-height: 85vh;
+        .exp-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateX(4px);
         }
 
-        .command-line { margin-bottom: 35px; }
-        .prompt { color: var(--accent-color); font-weight: bold; margin-bottom: 10px; display: block; }
-        .prompt::before { content: "diyar@astana:~$ "; color: var(--secondary-accent); }
-        
-        h1 { font-size: 1.8rem; margin-bottom: 10px; color: var(--h-color); }
-        .highlight { color: var(--accent-color); }
-
-        .projects-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 15px;
+        /* Убираем подчеркивание у ссылки */
+        .exp-item-link {
+            display: contents;
+            text-decoration: none;
+            color: inherit;
         }
 
-        .project-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            border-radius: 8px;
+        .exp-item-link .exp-item {
+            cursor: pointer;
         }
 
-        .project-box:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-2px);
-        }
-
-        .project-title { color: var(--accent-color); font-weight: 700; text-decoration: none; font-size: 1.1rem; }
-        .project-box p { font-size: 0.9rem; margin-top: 10px; opacity: 0.8; }
-
-        .links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-        }
-
-        .social-btn {
+        .exp-left {
             display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .exp-role {
+            font-weight: 500;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .exp-company {
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .exp-tag {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.35rem 0.8rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #b5a89e;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .exp-item .exp-link-icon {
+            color: var(--accent-white);
+            font-size: 0.8rem;
+            opacity: 0.3;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .exp-item:hover .exp-link-icon {
+            opacity: 0.9;
+            transform: translateX(3px);
+        }
+
+        /* КНОПКИ ССЫЛОК */
+        .links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .link-btn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 12px;
-            background: var(--card-bg);
-            color: var(--text-color);
+            gap: 0.55rem;
+            background: var(--btn-bg);
+            padding: 0.75rem 1rem;
+            border-radius: 100px;
             text-decoration: none;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            transition: 0.2s;
+            color: #c9bfb5;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .social-btn:hover {
-            background: var(--accent-color);
-            color: #fff;
+        .link-btn svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
+            opacity: 0.7;
+            transition: transform 0.25s ease, opacity 0.25s ease;
         }
 
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 18px;
-            background: var(--secondary-accent);
-            animation: blink 1s infinite;
-            vertical-align: middle;
+        .link-btn:hover {
+            background: var(--btn-hover);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .link-btn:hover svg {
+            opacity: 1;
+            transform: scale(1.1);
+        }
 
+        /* ФУТЕР */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.75rem;
+            color: #61554c;
+        }
+
+        .footer .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.3rem 0.8rem;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--accent-white);
+            font-weight: 500;
+            font-size: 0.7rem;
+        }
+
+        .footer .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-white);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.9);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        /* АДАПТИВНОСТЬ */
         @media (max-width: 600px) {
-            .terminal-body { padding: 20px; }
-            .prompt::before { content: "➜ "; }
+            .card {
+                padding: 2rem 1.5rem 1.5rem;
+                border-radius: 28px;
+            }
+
+            .name {
+                font-size: 2.5rem;
+            }
+
+            .links {
+                grid-template-columns: 1fr;
+            }
+
+            .exp-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .exp-tag {
+                align-self: flex-start;
+            }
+
+            .footer {
+                flex-direction: column-reverse;
+                align-items: center;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
-<body data-theme="dark">
 
-<div class="terminal-window">
-    <div class="terminal-header">
-        <div class="dots">
-            <div class="dot red" onclick="alert('System Shutdown Sim...')"></div>
-            <div class="dot yellow"></div>
-            <div class="dot green" id="themeBtn"></div>
-        </div>
-        <div class="title">zsh — diyardyus — 2026</div>
-        <div class="theme-toggle" onclick="toggleTheme()">
-            <i class="fa-solid fa-circle-half-stroke"></i>
-        </div>
-    </div>
+<body>
+    <div class="card">
 
-    <div class="terminal-body">
-        
-        <div class="command-line">
-            <span class="prompt">whoami</span>
-            <div class="output">
-                <h1>Diyar, <span class="highlight">14 y.o.</span></h1>
-                <p>Full-stack developer from <span class="highlight">Astana</span>.</p>
-                <p>Stack: Python (Django), Dart (Flutter), AI Solutions.</p>
-            </div>
+        <!-- ИМЯ + ПОДЗАГОЛОВОК -->
+        <div class="header">
+            <h1 class="name">DIYAR OWN</h1>
+            <div class="sub-head">или Дюсембаев Дияр</div>
         </div>
 
-        <div class="command-line">
-            <span class="prompt">ls --projects</span>
-            <div class="output">
-                <div class="projects-container">
-                    <div class="project-box">
-                        <a href="#" class="project-title">LabAI</a>
-                        <p>Experimental AI research platform focused on LLM fine-tuning and automated analytical workflows.</p>
+        <!-- СТАТУС -->
+        <div class="status">
+            <span class="highlight">14 лет</span>
+            <span class="sep">•</span>
+            <span>Астана</span>
+        </div>
+
+        <!-- ОПЫТ -->
+        <div class="experience">
+            <a href="https://alerta-eta.vercel.app" target="_blank" class="exp-item-link">
+                <div class="exp-item">
+                    <div class="exp-left">
+                        <span class="exp-role">CEO</span>
+                        <span class="exp-company">· ALERTA</span>
                     </div>
-                    <div class="project-box">
-                        <a href="#" class="project-title">AimAI</a>
-                        <p>A smart AI task tracker that helps improve discipline, focus, and more..</p>
-                    </div>
-                    <div class="project-box">
-                        <span class="project-title">Automation Lab</span>
-                        <p>Custom-built scripts for processing datasets and optimizing developer operations (DevOps).</p>
-                    </div>
+                    <span class="exp-link-icon">↗</span>
+                </div>
+            </a>
+
+            <div class="exp-item">
+                <div class="exp-left">
+                    <span class="exp-role">UI/UX-дизайнер</span>
+                    <span class="exp-company">· SANACRM</span>
                 </div>
             </div>
         </div>
 
-        <div class="command-line">
-            <span class="prompt">curl -X GET /contacts</span>
-            <div class="output">
-                <div class="links-grid">
-                    <a href="https://t.me/diyardyus" target="_blank" class="social-btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
-                    <a href="https://github.com/Own11" target="_blank" class="social-btn"><i class="fa-brands fa-github"></i> GitHub</a>
-                    <a href="https://t.me/CodeByDiyar" target="_blank" class="social-btn"><i class="fa-solid fa-bullhorn"></i> Channel</a>
-                </div>
-            </div>
+        <!-- ССЫЛКИ -->
+        <div class="links">
+            <a href="https://x.com/DIYAROWN" target="_blank" class="link-btn">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+                Twitter
+            </a>
+            <a href="https://www.linkedin.com/in/diyar-own-b443093b4?utm_source=share_via&utm_content=profile&utm_medium=member_ios"
+                target="_blank" class="link-btn">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z" />
+                </svg>
+                LinkedIn
+            </a>
+            <a href="https://t.me/codebydiyar" target="_blank" class="link-btn">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+                </svg>
+                Telegram
+            </a>
         </div>
 
-        <div class="command-line">
-            <span class="prompt"><span id="typewriter"></span><span class="cursor"></span></span>
+        <!-- ФУТЕР -->
+        <div class="footer">
+            <span>© 2026 DIYAR OWN</span>
         </div>
 
     </div>
-</div>
-
-<script>
-    // Theme Switcher Logic
-    function toggleTheme() {
-        const body = document.body;
-        const currentTheme = body.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        body.setAttribute('data-theme', newTheme);
-    }
-
-    // Typewriter effect
-    const text = "ping -c 1 future_opportunities.sh";
-    let i = 0;
-    function type() {
-        if (i < text.length) {
-            document.getElementById("typewriter").innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, 100);
-        }
-    }
-    window.onload = type;
-</script>
-
 </body>
+
 </html>
