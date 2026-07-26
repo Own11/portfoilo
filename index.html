@@ -7,19 +7,22 @@
     <title>DIYAR OWN · kind guy</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet" />
     <style>
         :root {
-            --bg-color: #080706;
-            --card-bg: rgba(18, 15, 13, 0.7);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --text-main: #f3eee9;
-            --text-muted: #8e8379;
-            --accent-white: #ffffff;
-            --accent-glow: rgba(255, 255, 255, 0.08);
-            --btn-bg: rgba(255, 255, 255, 0.03);
-            --btn-hover: rgba(255, 255, 255, 0.08);
+            --bg-0: #090b10;
+            --bg-1: #0e1117;
+            --card-bg: rgba(14, 17, 23, 0.82);
+            --card-border: rgba(255, 255, 255, 0.07);
+            --text-main: #eef0f2;
+            --text-muted: #6f7684;
+            --text-dim: #4a505c;
+            --signal: #ffffff;
+            --signal-dim: rgba(255, 255, 255, 0.08);
+            --signal-line: rgba(255, 255, 255, 0.28);
+            --ok: #ffffff;
         }
 
         * {
@@ -29,113 +32,204 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background:
+                radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 85% 90%, rgba(255, 255, 255, 0.035) 0%, transparent 40%),
+                var(--bg-0);
             min-height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1rem;
+            padding: 1.25rem;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             letter-spacing: -0.011em;
             color: var(--text-main);
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* МЯГКОЕ ДИНАМИЧЕСКОЕ СВЕЧЕНИЕ НА ФОНЕ */
-        body::before {
+        /* faint scanlines across the whole viewport, echoes the "monitoring" idea without being loud */
+        body::after {
             content: '';
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0) 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0;
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.012) 0px,
+                    rgba(255, 255, 255, 0.012) 1px,
+                    transparent 1px,
+                    transparent 3px);
             pointer-events: none;
-            filter: blur(50px);
+            mix-blend-mode: overlay;
         }
 
-        /* ГЛАВНАЯ КАРТОЧКА */
         .card {
             position: relative;
             z-index: 1;
-            max-width: 580px;
+            max-width: 560px;
             width: 100%;
             background: var(--card-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            padding: 3rem;
-            border-radius: 32px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
             border: 1px solid var(--card-border);
             box-shadow:
-                0 30px 100px -20px rgba(0, 0, 0, 0.9),
-                inset 0 1px 0 rgba(255, 255, 255, 0.12);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+                0 40px 100px -30px rgba(0, 0, 0, 0.85),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            overflow: hidden;
         }
 
-        .card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            box-shadow:
-                0 35px 110px -20px rgba(0, 0, 0, 0.95),
-                0 0 40px rgba(255, 255, 255, 0.04),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        /* TERMINAL TITLE BAR — the signature element: this whole card reads as a
+           monitoring console for one person, which is exactly what ALERTA (his app) does */
+        .console-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 1.25rem;
+            background: rgba(255, 255, 255, 0.015);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        /* ВЕРХНИЙ СВЕТОВОЙ АКЦЕНТ */
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 20%;
-            right: 20%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        .console-dots {
+            display: flex;
+            gap: 0.4rem;
         }
 
-        /* ХЕДЕР */
+        .console-dots span {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .console-path {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            letter-spacing: 0.01em;
+        }
+
+        .console-live {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--ok);
+            letter-spacing: 0.04em;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--ok);
+            box-shadow: 0 0 8px rgba(56, 229, 164, 0.7);
+            animation: blip 1.8s infinite ease-in-out;
+        }
+
+        @keyframes blip {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(0.85);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .content {
+            padding: 2.25rem 2.25rem 1.75rem;
+        }
+
+        /* HEADER */
         .header {
-            margin-bottom: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--signal);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 14px;
+            height: 1px;
+            background: var(--signal-line);
         }
 
         .name {
-            font-size: 3.25rem;
-            font-weight: 600;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(180deg, #ffffff 30%, #a8a099 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            color: var(--text-main);
+        }
+
+        .name .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 2.1rem;
+            background: var(--signal);
+            margin-left: 0.35rem;
+            vertical-align: -0.15em;
+            animation: caret 1.05s step-end infinite;
+        }
+
+        @keyframes caret {
+
+            0%,
+            49% {
+                opacity: 1;
+            }
+
+            50%,
+            100% {
+                opacity: 0;
+            }
         }
 
         .sub-head {
-            font-size: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
             font-weight: 400;
             color: var(--text-muted);
-            letter-spacing: 0.02em;
-            text-transform: lower-case;
+            margin-top: 0.55rem;
         }
 
-        /* СТАТУС / ИНФО-БАР */
+        .sub-head span {
+            color: var(--text-dim);
+        }
+
+        /* STATUS */
         .status {
             display: inline-flex;
             flex-wrap: wrap;
             align-items: center;
             gap: 0.6rem;
-            background: rgba(255, 255, 255, 0.025);
-            padding: 0.45rem 0.9rem;
-            border-radius: 100px;
-            margin-bottom: 2.25rem;
-            font-size: 0.85rem;
-            color: #a3988e;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--signal-dim);
+            padding: 0.4rem 0.85rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            color: #d7dade;
+            border: 1px solid var(--signal-line);
         }
 
         .status .sep {
-            color: rgba(255, 255, 255, 0.15);
-            font-size: 0.75rem;
+            color: rgba(255, 106, 57, 0.35);
         }
 
         .status .highlight {
@@ -143,300 +237,198 @@
             color: var(--text-main);
         }
 
-        .status-link {
-            color: var(--accent-white);
-            text-decoration: none;
-            transition: opacity 0.2s;
-            font-weight: 500;
-        }
-
-        .status-link:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
-
-        .status .badge {
-            background: var(--accent-glow);
-            padding: 0.15rem 0.55rem;
-            border-radius: 100px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            color: var(--accent-white);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        /* СЕКЦИЯ ОПЫТА */
+        /* EXPERIENCE — framed as a log, since that matches the console concept */
         .experience {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 2.25rem;
+            margin-bottom: 2rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .exp-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 1.2rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-        }
-
-        .exp-item:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.12);
-            transform: translateX(4px);
-        }
-
-        /* Убираем подчеркивание у ссылки */
         .exp-item-link {
-            display: contents;
             text-decoration: none;
             color: inherit;
         }
 
-        .exp-item-link .exp-item {
-            cursor: pointer;
+        .exp-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.85rem 0 0.85rem 1.25rem;
+            transition: padding-left 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .exp-item::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--text-dim);
+            border: 2px solid var(--bg-1);
+            outline: 2px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .exp-item.is-active::before {
+            background: var(--signal);
+            outline-color: var(--signal-line);
+        }
+
+        .exp-item-link:hover .exp-item {
+            padding-left: 1.55rem;
         }
 
         .exp-left {
             display: flex;
-            align-items: center;
+            align-items: baseline;
             gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .exp-role {
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-main);
             font-size: 0.95rem;
         }
 
         .exp-company {
+            font-family: 'JetBrains Mono', monospace;
             font-weight: 400;
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.82rem;
         }
 
-        .exp-tag {
-            background: rgba(255, 255, 255, 0.04);
-            padding: 0.35rem 0.8rem;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #b5a89e;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .exp-arrow {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--signal);
+            font-size: 0.85rem;
+            opacity: 0;
+            transform: translateX(-4px);
+            transition: all 0.25s ease;
+            flex-shrink: 0;
         }
 
-        .exp-item .exp-link-icon {
-            color: var(--accent-white);
-            font-size: 0.8rem;
-            opacity: 0.3;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+        .exp-item-link:hover .exp-arrow {
+            opacity: 1;
+            transform: translateX(0);
         }
 
-        .exp-item:hover .exp-link-icon {
-            opacity: 0.9;
-            transform: translateX(3px);
-        }
-
-        /* КНОПКИ ССЫЛОК */
+        /* LINKS */
         .links {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
-            margin-bottom: 2rem;
+            gap: 0.65rem;
+            margin-bottom: 1.75rem;
         }
 
         .link-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.55rem;
-            background: var(--btn-bg);
-            padding: 0.75rem 1rem;
-            border-radius: 100px;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.025);
+            padding: 0.75rem 0.5rem;
+            border-radius: 12px;
             text-decoration: none;
-            color: #c9bfb5;
+            color: #c3c8d1;
             font-weight: 500;
-            font-size: 0.85rem;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.82rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .link-btn svg {
             width: 15px;
             height: 15px;
             fill: currentColor;
-            opacity: 0.7;
-            transition: transform 0.25s ease, opacity 0.25s ease;
+            opacity: 0.75;
+            transition: transform 0.22s ease, opacity 0.22s ease;
         }
 
         .link-btn:hover {
-            background: var(--btn-hover);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: var(--signal-dim);
+            border-color: var(--signal-line);
             color: #ffffff;
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
         .link-btn:hover svg {
             opacity: 1;
-            transform: scale(1.1);
+            transform: scale(1.08);
         }
 
-        /* ФУТЕР */
+        /* FOOTER */
         .footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.75rem;
-            color: #61554c;
-        }
-
-        .footer .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.3rem 0.8rem;
-            border-radius: 100px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--accent-white);
-            font-weight: 500;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
+            color: var(--text-dim);
         }
 
-        .footer .status-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent-white);
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            animation: pulse 2s infinite ease-in-out;
+        .footer .uptime {
+            color: var(--text-muted);
         }
 
-        @keyframes pulse {
+        @media (prefers-reduced-motion: reduce) {
 
-            0%,
-            100% {
-                opacity: 0.3;
-                transform: scale(0.9);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.1);
+            .live-dot,
+            .name .cursor {
+                animation: none;
             }
         }
 
-        /* АДАПТИВНОСТЬ ДЛЯ ТЕЛЕФОНОВ */
+        /* MOBILE */
         @media (max-width: 600px) {
-            .card {
-                padding: 2rem 1.5rem 1.5rem;
-                border-radius: 28px;
-                max-width: 100%;
-                margin: 0.5rem;
+            .content {
+                padding: 1.75rem 1.5rem 1.5rem;
             }
 
             .name {
-                font-size: 2.5rem;
+                font-size: 2.3rem;
             }
 
-            .sub-head {
-                font-size: 0.9rem;
-            }
-
-            .status {
-                font-size: 0.75rem;
-                padding: 0.35rem 0.7rem;
-                gap: 0.4rem;
-                margin-bottom: 1.75rem;
+            .name .cursor {
+                height: 1.7rem;
             }
 
             .links {
                 grid-template-columns: 1fr;
-                gap: 0.6rem;
             }
 
             .link-btn {
                 padding: 0.85rem 1rem;
-                font-size: 0.95rem;
-                justify-content: center;
-            }
-
-            .link-btn svg {
-                width: 18px;
-                height: 18px;
+                font-size: 0.9rem;
             }
 
             .exp-item {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 0.5rem;
-                padding: 0.9rem 1rem;
-            }
-
-            .exp-role {
-                font-size: 0.9rem;
-            }
-
-            .exp-company {
-                font-size: 0.85rem;
-            }
-
-            .exp-tag {
-                align-self: flex-start;
-                font-size: 0.7rem;
-            }
-
-            .footer {
-                flex-direction: column-reverse;
-                align-items: center;
-                gap: 0.8rem;
-                padding-top: 1.2rem;
-            }
-
-            .footer .status-indicator {
-                font-size: 0.65rem;
-                padding: 0.25rem 0.7rem;
-            }
-        }
-
-        /* Для очень маленьких экранов */
-        @media (max-width: 380px) {
-            .card {
-                padding: 1.5rem 1rem 1.2rem;
-                border-radius: 24px;
-            }
-
-            .name {
-                font-size: 2rem;
-            }
-
-            .status {
-                font-size: 0.65rem;
-                padding: 0.3rem 0.6rem;
-            }
-
-            .exp-item {
-                padding: 0.7rem 0.8rem;
-                border-radius: 16px;
-            }
-
-            .exp-left {
-                flex-wrap: wrap;
                 gap: 0.3rem;
             }
 
-            .link-btn {
-                font-size: 0.85rem;
-                padding: 0.7rem 0.8rem;
+            .footer {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .name {
+                font-size: 1.9rem;
+            }
+
+            .console-path {
+                display: none;
             }
         }
     </style>
@@ -445,71 +437,77 @@
 <body>
     <div class="card">
 
-        <!-- ИМЯ + ПОДЗАГОЛОВОК -->
-        <div class="header">
-            <h1 class="name">DIYAR OWN</h1>
-            <div class="sub-head">or Dyusembaev Diyar</div>
+        <div class="console-bar">
+            <div class="console-dots">
+                <span></span><span></span><span></span>
+            </div>
+            <div class="console-path">~/diyar/profile</div>
+            <div class="console-live"><span class="live-dot"></span>ONLINE</div>
         </div>
 
-        <!-- СТАТУС -->
-        <div class="status">
-            <span class="highlight">14 y.o.</span>
-            <span class="sep">•</span>
-            <span>Astana</span>
-        </div>
+        <div class="content">
 
-        <!-- ОПЫТ -->
-        <div class="experience">
-            <a href="https://alerta-eta.vercel.app" target="_blank" class="exp-item-link">
+            <div class="header">
+                <div class="eyebrow">building things · astana</div>
+                <h1 class="name">DIYAR OWN<span class="cursor"></span></h1>
+                <div class="sub-head">or <span>Dyusembaev Diyar</span></div>
+            </div>
+
+            <div class="status">
+                <span class="highlight">14 y.o.</span>
+                <span>•</span>
+                <span>Astana, KZ</span>
+            </div>
+
+            <div class="experience">
+                <a href="https://alerta-eta.vercel.app" target="_blank" class="exp-item-link">
+                    <div class="exp-item is-active">
+                        <div class="exp-left">
+                            <span class="exp-role">CEO</span>
+                            <span class="exp-company">· ALERTA</span>
+                        </div>
+                        <span class="exp-arrow">visit →</span>
+                    </div>
+                </a>
+
                 <div class="exp-item">
                     <div class="exp-left">
-                        <span class="exp-role">CEO</span>
-                        <span class="exp-company">· ALERTA</span>
+                        <span class="exp-role">Ex UI/UX Design</span>
+                        <span class="exp-company">· SANACRM</span>
                     </div>
                 </div>
-            </a>
-
-            <div class="exp-item">
-                <div class="exp-left">
-                    <span class="exp-role">EX UI/UX-design</span>
-                    <span class="exp-company">· SANACRM</span>
-                </div>
             </div>
-        </div>
 
-        <!-- ССЫЛКИ -->
-        <div class="links">
-            <!-- Twitter -->
-            <a href="https://x.com/DIYAROWN" target="_blank" class="link-btn">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-                Twitter
-            </a>
-            <!-- GitHub (вместо LinkedIn) -->
-            <a href="https://github.com/own11" target="_blank" class="link-btn">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.15 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.62.24 2.85.12 3.15.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
-                </svg>
-                GitHub
-            </a>
-            <!-- Telegram -->
-            <a href="https://t.me/codebydiyar" target="_blank" class="link-btn">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
-                </svg>
-                Telegram
-            </a>
-        </div>
+            <div class="links">
+                <a href="https://x.com/DIYAROWN" target="_blank" class="link-btn">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    Twitter
+                </a>
+                <a href="https://github.com/own11" target="_blank" class="link-btn">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.15 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.62.24 2.85.12 3.15.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
+                    GitHub
+                </a>
+                <a href="https://t.me/codebydiyar" target="_blank" class="link-btn">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+                    </svg>
+                    Telegram
+                </a>
+            </div>
 
-        <!-- ФУТЕР -->
-        <div class="footer">
-            <span>© 2026 DIYAR OWN</span>
-        </div>
+            <div class="footer">
+                <span>© 2026 DIYAR OWN</span>
+                <span class="uptime">status: Kind guy</span>
+            </div>
 
+        </div>
     </div>
 </body>
 
