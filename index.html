@@ -342,18 +342,24 @@
             border-bottom: 0;
         }
 
+        /* NEW: project image icon */
         .project-icon {
             flex: 0 0 50px;
             width: 50px;
             height: 50px;
-            background: var(--blue);
-            color: #fff;
-            font-weight: bold;
-            font-size: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 1px solid var(--blue-dark);
+            overflow: hidden;
+            background: var(--blue);
+        }
+
+        .project-icon img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .project-icon.alt {
@@ -1038,7 +1044,7 @@
             <nav class="topnav" aria-label="Main">
                 <a href="#story" data-tab="story">Profile</a>
                 <a href="#info" data-tab="info">Info</a>
-                <a href="#projects" data-tab="projects">Projects<span class="badge" aria-label="4 projects">4</span></a>
+                <a href="#projects" data-tab="projects">Projects<span class="badge" aria-label="5 projects">5</span></a>
             </nav>
         </div>
         <div class="progress" id="progress"></div>
@@ -1258,8 +1264,11 @@
 
                 <div class="box">
                     <div class="box-head">Things I've built</div>
+                    <!-- LabAI with image -->
                     <div class="project">
-                        <div class="project-icon" aria-hidden="true">L</div>
+                        <div class="project-icon" aria-hidden="true">
+                            <img src="LabAI.png" alt="LabAI project icon" />
+                        </div>
                         <div>
                             <div class="project-name"><a href="https://labaidev.vercel.app" target="_blank"
                                     rel="noopener">LabAI</a></div>
@@ -1269,6 +1278,7 @@
                                     rel="noopener">labaidev.vercel.app</a></div>
                         </div>
                     </div>
+                    <!-- Alerta (unchanged, keeps its letter icon) -->
                     <div class="project">
                         <div class="project-icon alt" aria-hidden="true">A</div>
                         <div>
@@ -1280,8 +1290,11 @@
                                     rel="noopener">alerta-eta.vercel.app</a></div>
                         </div>
                     </div>
+                    <!-- Catalyse with image -->
                     <div class="project">
-                        <div class="project-icon soft" aria-hidden="true">C</div>
+                        <div class="project-icon soft" aria-hidden="true">
+                            <img src="catalyst.png" alt="Catalyse project icon" />
+                        </div>
                         <div>
                             <div class="project-name"><a href="https://catalyse-vert.vercel.app" target="_blank"
                                     rel="noopener">Catalyse</a></div>
@@ -1294,8 +1307,11 @@
                                     rel="noopener">catalyse-vert.vercel.app</a></div>
                         </div>
                     </div>
+                    <!-- AimAI with image -->
                     <div class="project">
-                        <div class="project-icon soft" aria-hidden="true">Ai</div>
+                        <div class="project-icon soft" aria-hidden="true">
+                            <img src="aimai.png" alt="AimAI project icon" />
+                        </div>
                         <div>
                             <div class="project-name">AimAI</div>
                             <div class="project-role">Past project</div>
@@ -1304,6 +1320,7 @@
                                 time.</div>
                         </div>
                     </div>
+                    <!-- SANACRM (unchanged) -->
                     <div class="project">
                         <div class="project-icon past" aria-hidden="true">S</div>
                         <div>
